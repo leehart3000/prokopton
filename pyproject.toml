@@ -7,7 +7,7 @@ license = "AGPL-3.0-only"
 license-files = ["LICENSE"]
 authors = [{ name = "Lee Hart" }]
 requires-python = ">=3.13,<3.14"
-dependencies = []
+dependencies = ["pydantic>=2.11,<3"]
 
 [project.urls]
 Repository = "https://github.com/leehart3000/prokopton"
@@ -28,6 +28,7 @@ requires-pixi = ">=0.84"
 
 [tool.pixi.dependencies]
 python = "3.13.*"
+pydantic = ">=2.11,<3"
 
 [tool.pixi.pypi-dependencies]
 prokopton = { path = ".", editable = true }
@@ -77,6 +78,7 @@ strict = true
 files = ["src", "tests"]
 mypy_path = "src"
 explicit_package_bases = true
+plugins = ["pydantic.mypy"]
 
 # --- Pytest: testing ---
 

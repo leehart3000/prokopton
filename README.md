@@ -14,6 +14,37 @@ Prokopton is published as the `prokopton` package. Its shared code lives in
 import prokopton.core
 ```
 
+## Features
+
+### Configuration loading
+
+`prokopton.core.config` loads TOML configuration files into validated,
+immutable [Pydantic](https://docs.pydantic.dev/) models, with optional
+overrides from environment variables:
+
+```python
+from pydantic import Field
+
+from prokopton.core.config import ConfigModel, load_config
+
+
+class TrainingConfig(ConfigModel):
+    seed: int = 42
+
+
+class AppConfig(ConfigModel):
+    name: str
+    training: TrainingConfig = Field(default_factory=TrainingConfig)
+
+
+config = load_config("app.toml", AppConfig, env_prefix="MYAPP_")
+```
+
+With `env_prefix="MYAPP_"`, setting `MYAPP_TRAINING__SEED=7` overrides `seed`
+in the `[training]` table. Unknown keys are rejected, so typos are caught early.
+
+## Namespace
+
 Other Prokopton packages add their own subpackages to the same namespace, for
 example `prokopton.ml` from the `prokopton-ml` package.
 
