@@ -38,6 +38,8 @@ ruff = "*"
 mypy = "*"
 pytest = "*"
 pytest-cov = "*"
+python-build = "*"
+twine = "*"
 
 [tool.pixi.feature.dev.tasks]
 format = "ruff format ."
@@ -46,6 +48,9 @@ lint = "ruff check ."
 typecheck = "mypy"
 test = "pytest"
 check = { depends-on = ["format-check", "lint", "typecheck", "test"] }
+clean = "python -c \"import shutil; shutil.rmtree('dist', ignore_errors=True)\""
+build = { cmd = "python -m build", depends-on = ["clean"] }
+build-check = { cmd = "twine check --strict dist/*", depends-on = ["build"] }
 
 [tool.pixi.environments]
 default = { features = ["dev"], solve-group = "default" }
